@@ -126,6 +126,29 @@ jobs:
             uvmboot.exe
             zapdir.exe
             ncproxy.exe
+            - name: Checkout
+      
+      - uses: actions/checkout@v2
+      - name: Build
+        run: echo ${{ github.sha }} > Release.txt
+      - name: Test
+        run: cat Release.txt
+      - name: Release
+        uses: softprops/action-gh-release@v0.1.13
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        with:
+          files: |
+            Release.txt
+            containerd-shim-runhcs-v1.exe
+            runhcs.exe
+            tar2ext4.exe
+            device-util.exe
+            wclayer.exe
+            grantvmgroupaccess.exe
+            uvmboot.exe
+            zapdir.exe
+            ncproxy.exe 
 
   build_gcs:
     runs-on: ubuntu-latest
@@ -152,31 +175,4 @@ jobs:
         run: |
           BASE=./base.tar.gz
           make all test  
-            
-  publish_release:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Build
-        run: echo ${{ github.sha }} > Release.txt
-      - name: Test
-        run: cat Release.txt
-      - name: Release
-        uses: softprops/action-gh-release@v0.1.13
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: |
-            Release.txt
-            containerd-shim-runhcs-v1.exe
-            runhcs.exe
-            tar2ext4.exe
-            device-util.exe
-            wclayer.exe
-            grantvmgroupaccess.exe
-            uvmboot.exe
-            zapdir.exe
-            ncproxy.exe 
-
+          
