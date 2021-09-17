@@ -152,3 +152,25 @@ jobs:
         run: |
           BASE=./base.tar.gz
           make all test
+
+  publish_release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Create a Release
+      uses: elgohr/Github-Release-Action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      with:
+        args: Publish latest master build of hcsshim artifacts
+        name: binaries
+        path: |
+            containerd-shim-runhcs-v1.exe
+            runhcs.exe
+            tar2ext4.exe
+            device-util.exe
+            wclayer.exe
+            grantvmgroupaccess.exe
+            uvmboot.exe
+            zapdir.exe
+            ncproxy.exe        
